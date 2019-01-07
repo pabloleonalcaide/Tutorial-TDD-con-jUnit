@@ -1,95 +1,74 @@
 package main;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Example class to work with jUnit and TDD
+ * 
  * @author pablo
  *
  */
 public class RomanNumbers {
 
+	private final static List<String> ROMAN_SIMBOLS = Arrays.asList("I", "V", "X", "L", "C", "D","M");
+
 	/**
 	 * Transform natural number into roman
+	 * 
 	 * @param natural number
 	 * @return roman number
 	 */
-	public String naturalToRoman(Integer natural) { 
-		
+	public String naturalToRoman(Integer natural) {
+
 		char[] charNumber = natural.toString().toCharArray();
-		
-		if(charNumber.length >= 2) {
-			String romanUnit = sendUnit(Character.getNumericValue(charNumber[1]));
-			String romanTen = sendTens(Character.getNumericValue(charNumber[0]));
-			return romanTen + romanUnit;
-			
-		}else if (charNumber.length == 1) {
-			return sendUnit(Character.getNumericValue(charNumber[0]));
-		}		
-		return null;
+		int inc = 0;
+		String result = "";
+		for (int i = charNumber.length -1; i >= 0 ; i--) {
+			String roman = changeNumber(Character.getNumericValue(charNumber[i]), 0+inc, 1+inc, 2+inc);
+			result = roman + result;
+			inc +=2;
+		}
+		return result;
+
 	}
-	
+
+	/**
+	 * 
+	 * @param startNumber
+	 * @param naturalNumber
+	 * @param startRomanNumber
+	 * @param romanIncrement
+	 * @return
+	 */
+	private String add(int startNumber, int naturalNumber, String startRomanNumber, String romanIncrement) {
+		for (int i = startNumber; i <= naturalNumber; i++) {
+			startRomanNumber += romanIncrement;
+		}
+		return startRomanNumber;
+	}
+
 	/**
 	 * Convert unit
+	 * 
 	 * @param natural
 	 * @return
 	 */
-	private String sendUnit(int natural) {
+	private String changeNumber(int natural, int x, int y, int z) {
 		switch (natural) {
-			case 4: return "IV";
-			case 9: return "IX";
+		case 4:
+			return ROMAN_SIMBOLS.get(x) + ROMAN_SIMBOLS.get(y);
+		case 9:
+			return ROMAN_SIMBOLS.get(x) + ROMAN_SIMBOLS.get(z);
 		}
-		if(natural <= 3) {
-			return addI(1, natural, "");
+		if (natural <= 3) {
+			return add(1, natural, "", ROMAN_SIMBOLS.get(x));
 		}
 		if (natural <= 8) {
-			return addI(6, natural, "V");
+			return add(6, natural, ROMAN_SIMBOLS.get(y), ROMAN_SIMBOLS.get(x));
 		}
 		return null;
+
 	}
-	/**
-	 * 
-	 * @param startNumber
-	 * @param naturalNumber
-	 * @param startRomanNumber
-	 * @return
-	 */
-	private String addI(int startNumber, int naturalNumber, String startRomanNumber) {
-		String result = startRomanNumber;
-		for(int i=startNumber; i<= naturalNumber; i++) {
-			result += "I";
-		}
-		return result;
-		
-	}
-	/**
-	 * 
-	 * @param startNumber
-	 * @param naturalNumber
-	 * @param startRomanNumber
-	 * @return
-	 */
-	private String addX(int startNumber, int naturalNumber, String startRomanNumber) {
-		String result = startRomanNumber;
-		for(int i=startNumber; i<= naturalNumber; i++) {
-			result += "X";
-		}
-		return result;
-		
-	}
-	/**
-	 * 
-	 * @param ten
-	 * @return
-	 */
-	private String sendTens(int ten) {
-		switch (ten) {
-			case 4: return "XL";
-			case 9: return "XC";
-		}
-		if(ten <= 3) {
-			return addX(1, ten, "");
-		}
-		if (ten <= 8) {
-			return addX(6, ten, "L");
-		}
-		return null;
-	}
+
 }

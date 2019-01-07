@@ -3,10 +3,8 @@ package test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -160,10 +158,11 @@ class RomanNumbersTest {
 		assertEquals(romanNumbersList.get(8), "XXXVIII");
 		assertEquals(romanNumbersList.get(9), "XXXIX");
 	}
+	@Test
 	public void verifyTens() {
 		List<Integer> naturalNumbers = Arrays.asList(40,50,60,70,80,90);
 		
-		List romanNumbersList = (List) ((Collection<Integer>) naturalNumbers).stream().
+		List<String> romanNumbersList = ((Collection<Integer>) naturalNumbers).stream().
 				map( number -> romanNumbers.naturalToRoman(number)).collect(Collectors.toList());
 		
 		assertEquals(romanNumbersList.get(0), "XL");
@@ -173,4 +172,22 @@ class RomanNumbersTest {
 		assertEquals(romanNumbersList.get(4), "LXXX");
 		assertEquals(romanNumbersList.get(5), "XC");
 	}
+	
+	@Test
+	public void verifyRomans() {
+		List<Integer> naturalNumbers = Arrays.asList(100,200,300,400,500,600,700,800,900);
+		
+		List<String> romanNumbersList = ((Collection<Integer>) naturalNumbers).stream().
+				map( number -> romanNumbers.naturalToRoman(number)).collect(Collectors.toList());
+		
+		assertEquals(romanNumbersList.get(0), "C");
+		assertEquals(romanNumbersList.get(1), "CC");
+		assertEquals(romanNumbersList.get(2), "CCC");
+		assertEquals(romanNumbersList.get(3), "CD");
+		assertEquals(romanNumbersList.get(4), "D");
+		assertEquals(romanNumbersList.get(5), "DC");
+		assertEquals(romanNumbersList.get(6), "DCC");
+		assertEquals(romanNumbersList.get(7), "DCCC");
+		assertEquals(romanNumbersList.get(8), "CM");
+	} 
 }
